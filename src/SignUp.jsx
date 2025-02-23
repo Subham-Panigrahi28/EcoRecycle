@@ -8,16 +8,16 @@ function Signup() {
     email: '',
     password: '',
     confirmPassword: '',
-    userType: 'corporate' // or 'collector'
+    userType: 'corporate', // Default to corporate
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -51,8 +51,9 @@ function Signup() {
         throw new Error(error);
       }
 
-      // Registration successful
-      navigate('/login'); // Redirect to login page
+      // Redirect based on user type
+      const redirectPath = formData.userType === 'corporate' ? '/corporate' : '/recycler';
+      navigate(redirectPath);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -68,7 +69,7 @@ function Signup() {
             Create your account
           </h2>
         </div>
-        
+
         {error && (
           <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
             <span className="block sm:inline">{error}</span>
@@ -127,7 +128,7 @@ function Signup() {
                 onChange={handleChange}
               >
                 <option value="corporate">Corporate</option>
-                <option value="collector">Collector</option>
+                <option value="recycler">Recycler</option>
               </select>
             </div>
           </div>
